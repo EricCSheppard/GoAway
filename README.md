@@ -30,7 +30,7 @@ Go away is a travel itinerary planning app.  It is designed to help with all the
     
 ## Wireframes
 ---
-![Go Away Wireframes](./images/goawaywireframes.png)
+![Go Away Wireframes](./images/goawaywireframes2.png)
 
 ## ERD
 ---
