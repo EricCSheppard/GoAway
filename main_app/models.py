@@ -58,17 +58,22 @@ class Day(models.Model):
     activities = models.ManyToManyField(Activity, blank=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['date']
+
     def __str__(self):
         return f'Day {self.number} of {self.trip}'
     
     def as_dict(self):
         return {
             'number' : self.number,
-            'date' : self.date,
-            'city' : self.city,
-            'state' : self.state,
-            'country' : self.country,
-            'transport' : self.transport,
-            'lodging' : self.lodging,
-            'trip' : self.trip.id
+            'date' : self.date
+            # 'city' : self.city,
+            # 'state' : self.state,
+            # 'country' : self.country,
+            # 'transport' : self.transport,
+            # 'lodging' : self.lodging,
+            # 'trip' : self.trip.id
         }
+    def get_absolute_url(self):
+        return reverse('day_detail', kwargs={'day_id': self.id})

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Trip, Day, Activity
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import DayForm
 from datetime import timedelta
 
@@ -33,6 +33,10 @@ def days_create(request, trip_id):
     trip = Trip.objects.get(id=trip_id)
     return render(request, 'days/create.html', {'trip': trip})
 
+
+# this function will take the input of number of days and create that number of day objects.
+# the days will auto populate number and date.
+
 def days_populate(request, trip_id):
     trip = Trip.objects.get(id=trip_id)
     # print('This is the trip: ', trip)
@@ -49,3 +53,7 @@ def days_populate(request, trip_id):
         print('THIS IS THE DAY: ', new_day.as_dict())
         new_day.save()
     return redirect('trip_detail', trip_id=trip_id)
+
+class DayUpdate(UpdateView):
+    model = Day
+    fields = ['city', 'state', 'country', 'transport', 'lodging', 'activities']

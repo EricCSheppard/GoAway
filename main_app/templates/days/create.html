@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>How many days is your trip?</h1>
-        
         <form action="{% url 'days_populate' trip.id %}" method="POST">
             {% csrf_token %}
             <input type="number" value="7" name="day_num">
