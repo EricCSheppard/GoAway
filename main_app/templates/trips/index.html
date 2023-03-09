@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{% url 'trip_create' %}">Add a trip</a>
+    <hr>
+    <h1>My Trips</h1>
+    {% for trip in trips %}
+        <a href="{% url 'trip_detail' trip.id %}">{{ trip.name }}</a>
+        <p>start: {{ trip.start }}</p>
+        <hr>
+    {% endfor %}
+{% endblock %}

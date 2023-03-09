@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Trip:</h1>
+        <p>{{ trip.name }} | start: {{ trip.start }}</p>
+        <hr>
+        {% for day in trip.day_set.all %}
+            <a href="{% url 'day_detail' day.id %}"> Day {{ day.number }}</a>
+            <p>{{ day.date }}</p>
+            <p>{{ day.city }}</p>
+            <!-- {% for activity in day.activities.all %}
+                <p>{{activity.name}}</p>
+            {% endfor %} -->
+            <hr>
+        {% endfor%}
+        
+{% endblock %}
