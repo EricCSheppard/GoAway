@@ -3,6 +3,7 @@ from .models import Trip, Day, Activity
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import DayForm, ActivityForm
 from datetime import timedelta
+import requests
 
 # Create your views here.
 
@@ -32,7 +33,10 @@ class TripDelete(DeleteView):
 def day_detail(request, day_id):
     day = Day.objects.get(id=day_id)
     activity_form = ActivityForm()
-    return render(request, 'days/detail.html', { 'day': day, 'activity_form': activity_form})
+    res = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=2235056e594342b9bfa213839230603&q={day.city}&days=1&aqi=no&alerts=no')
+    weather = res.json()
+    print(weather)
+    return render(request, 'days/detail.html', { 'day': day, 'activity_form': activity_form, 'weather': weather} )
 
 def days_create(request, trip_id):
     trip = Trip.objects.get(id=trip_id)

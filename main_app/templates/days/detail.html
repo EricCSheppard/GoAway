@@ -3,6 +3,7 @@
     <h1>Day {{ day.number }} in {{ day.city }}, {{ day.state }} {{ day.country }}</h1>
     <hr>
     <h2>Staying at: {{ day.lodging }}</h2>
+    <p>Current Temp(F): {{ weather.current.temp_f }}</p>
     <h3>activities:</h3>
     {% for activity in day.activities.all %}
     <ul>
