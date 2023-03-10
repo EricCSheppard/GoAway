@@ -26,10 +26,11 @@ class Activity(models.Model):
         choices = TIMES,
         default = TIMES[0][1]
     )
-    description = models.TextField(max_length=250)
+    description = models.CharField(max_length=125)
 
     def __str__(self):
         return self.name
+
 
 
 class Trip(models.Model):

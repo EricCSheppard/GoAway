@@ -1,13 +1,13 @@
 from django.forms import ModelForm
-from .models import Day
+from .models import Day,Activity
 
 class DayForm(ModelForm):
     class Meta:
         model = Day
         fields = '__all__'
 
-# class DayEdit(ModelForm):
-#     class Meta:
-#         model = Day
-#         exclude = ['number', 'date', 'activities', 'trip']
+class ActivityForm(ModelForm):
+    class Meta:
+        model = Activity
+        fields = ['name', 'time', 'description']
 

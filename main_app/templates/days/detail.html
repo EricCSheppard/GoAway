@@ -9,7 +9,11 @@
         <li><a href="">{{activity.name}}</a></li>
     </ul>
     {% endfor %}
+    <form action="{% url 'activity_create' day.id %}" method="POST">
+        {% csrf_token %}
+        {{ activity_form.as_p }}
+        <input type="submit" class="btn" value="Add Activity">
     <hr>
     <a href="{% url 'day_update' day.id %}">Edit Day</a>
-    
+
 {% endblock %}

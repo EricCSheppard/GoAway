@@ -15,6 +15,11 @@ urlpatterns = [
     path('days/create/<int:trip_id>', views.days_create, name='days_create'),
     path('days/populate/<int:trip_id>', views.days_populate, name='days_populate' ),
     path('days/<int:pk>/update/', views.DayUpdate.as_view(), name='day_update'),
+    path('days/<int:day_id>/activity_create', views.activity_create, name='activity_create'),
     path('days/<int:day_id>/', views.day_detail, name='day_detail'),
+
+    # Activities
+    # path('activity/create', views.activity_create, name='activity_create'),
+    path('activity/<int:pk>/update', views.ActivityUpdate.as_view(), name='activity_update')
     
 ]
