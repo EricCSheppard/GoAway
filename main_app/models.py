@@ -55,6 +55,7 @@ class Day(models.Model):
         default = TRANSPORT[2][0]
     )
     lodging = models.CharField(max_length=50, default='')
+    flight = models.CharField(max_length=20, default='')
     activities = models.ManyToManyField(Activity, blank=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
 

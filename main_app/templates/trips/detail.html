@@ -2,6 +2,7 @@
 {% block content %}
     <h1>Trip:</h1>
         <p>{{ trip.name }} | start: {{ trip.start }}</p>
+        <a href="{% url 'trip_delete' trip.id %}">Cancel trip.</a>
         <hr>
         {% for day in trip.day_set.all %}
             <a href="{% url 'day_detail' day.id %}"> Day {{ day.number }}</a>
@@ -12,5 +13,6 @@
             {% endfor %} -->
             <hr>
         {% endfor%}
+        <a href="">Never let the party die!</a> | <a href="">Nothing gold can stay.</a>
         
 {% endblock %}

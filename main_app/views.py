@@ -24,6 +24,10 @@ class TripCreate(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+    
+class TripDelete(DeleteView):
+    model = Trip
+    success_url = '/trips/'
 
 def day_detail(request, day_id):
     day = Day.objects.get(id=day_id)
@@ -56,4 +60,4 @@ def days_populate(request, trip_id):
 
 class DayUpdate(UpdateView):
     model = Day
-    fields = ['city', 'state', 'country', 'transport', 'lodging', 'activities']
+    fields = ['city', 'state', 'country', 'transport', 'lodging', 'flight']
