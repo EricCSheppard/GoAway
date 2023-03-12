@@ -8,11 +8,18 @@
             <a href="{% url 'day_detail' day.id %}"> Day {{ day.number }}</a>
             <p>{{ day.date }}</p>
             <p>{{ day.city }}</p>
+
             <!-- {% for activity in day.activities.all %}
                 <p>{{activity.name}}</p>
             {% endfor %} -->
             <hr>
         {% endfor%}
-        <a href="">Never let the party die!</a> | <a href="">Nothing gold can stay.</a>
-        
+        {% for item in weather %}
+            {% if item.current %}
+            <p>Current temp F: {{ item.current.temp_f }}</p><img src="{{ item.current.condition.icon}}">
+            {% else %}
+            <p>No weather data</p>
+            {% endif %}
+        {% endfor %}
+        <!-- <a href="">Never let the party die!</a> | <a href="">Nothing gold can stay.</a> -->
 {% endblock %}

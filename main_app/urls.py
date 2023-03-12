@@ -20,6 +20,7 @@ urlpatterns = [
 
     # Activities
     # path('activity/create', views.activity_create, name='activity_create'),
-    path('activity/<int:pk>/update', views.ActivityUpdate.as_view(), name='activity_update')
+    path('activity/<int:pk>/update', views.ActivityUpdate.as_view(), name='activity_update'),
+    path('activity/<int:activity_id>', views.activity_detail, name='activity_detail')    
     
 ]

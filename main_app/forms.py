@@ -9,5 +9,5 @@ class DayForm(ModelForm):
 class ActivityForm(ModelForm):
     class Meta:
         model = Activity
-        fields = ['name', 'time', 'description']
+        fields = ['name', 'time', 'description', 'inout']
 

@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ activity.name }}</h1>
+    <p>{{ activity.description }}</p>
+    <a href="{% url 'activity_update' activity.id %}">Edit Activity</a>
+{% endblock %}

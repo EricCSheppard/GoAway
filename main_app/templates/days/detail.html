@@ -3,11 +3,11 @@
     <h1>Day {{ day.number }} in {{ day.city }}, {{ day.state }} {{ day.country }}</h1>
     <hr>
     <h2>Staying at: {{ day.lodging }}</h2>
-    <p>Current Temp(F): {{ weather.current.temp_f }}</p>
+    <p>Current Temp(F): {{ weather.current.temp_f }}</p><img src="{{ weather.current.condition.icon}}">
     <h3>activities:</h3>
     {% for activity in day.activities.all %}
     <ul>
-        <li><a href="">{{activity.name}}</a></li>
+        <li>{{activity.name}} - {{activity.description}} - <a href="{% url 'activity_update' activity.id %}">EDIT</a></li>
     </ul>
     {% endfor %}
     <form action="{% url 'activity_create' day.id %}" method="POST">
@@ -16,5 +16,5 @@
         <input type="submit" class="btn" value="Add Activity">
     <hr>
     <a href="{% url 'day_update' day.id %}">Edit Day</a>
-
+    <a href="{% url 'trip_detail' day.trip_id %}">Back to trip</a>
 {% endblock %}

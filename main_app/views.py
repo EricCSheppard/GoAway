@@ -16,7 +16,18 @@ def trip_index(request):
 
 def trip_detail(request, trip_id):
     trip = Trip.objects.get(id=trip_id)
-    return render(request, 'trips/detail.html', { 'trip': trip})
+    days = Day.objects.filter(trip_id=trip_id)
+    print(days)
+    res = []
+    for day in days:
+        if day.city:
+            response = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=2235056e594342b9bfa213839230603&q={day.city}&days=1&aqi=no&alerts=no')
+            weather = response.json()
+            res.append(weather)
+        else:
+            res.append('')
+    # print(res)
+    return render(request, 'trips/detail.html', { 'trip': trip, 'weather': res})
 
 class TripCreate(CreateView):
     model = Trip
@@ -33,9 +44,10 @@ class TripDelete(DeleteView):
 def day_detail(request, day_id):
     day = Day.objects.get(id=day_id)
     activity_form = ActivityForm()
+    # This makes a request to the weather api for the forecast on the day.
     res = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=2235056e594342b9bfa213839230603&q={day.city}&days=1&aqi=no&alerts=no')
     weather = res.json()
-    print(weather)
+    # print(weather)
     return render(request, 'days/detail.html', { 'day': day, 'activity_form': activity_form, 'weather': weather} )
 
 def days_create(request, trip_id):
@@ -73,7 +85,10 @@ def activity_create(request, day_id):
     Day.objects.get(id=day_id).activities.add(new_activity.id)
     return redirect('day_detail', day_id=day_id)
 
+def activity_detail(request, activity_id):
+    activity = Activity.objects.get(id=activity_id)
+    return render(request, 'activities/detail.html', {'activity': activity})
 
 class ActivityUpdate(UpdateView):
     model = Activity
-    fields = ['name', 'time', 'description']
+    fields = ['name', 'time', 'description', 'inout']

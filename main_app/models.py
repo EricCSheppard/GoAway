@@ -19,19 +19,31 @@ TIMES = (
     ('E', 'Evening')
 )
 
+INOUT = (
+    ('I', 'Inside'),
+    ('O', 'Outside')
+)
+
 class Activity(models.Model):
     name = models.CharField(max_length=50)
     time = models.CharField(
         max_length=1,
         choices = TIMES,
-        default = TIMES[0][1]
+        default = TIMES[0][0]
+    )
+    inout = models.CharField(
+        max_length = 1,
+        choices = INOUT,
+        default = INOUT[0][0]
     )
     description = models.CharField(max_length=125)
 
     def __str__(self):
         return self.name
-
-
+    
+    def get_absolute_url(self):
+        return reverse('day', kwargs={'activity_id': self.id})
+    
 
 class Trip(models.Model):
     name = models.CharField(max_length=50)
@@ -48,15 +60,16 @@ class Day(models.Model):
     number = models.IntegerField()  
     date = models.DateField(default='')
     city = models.CharField(max_length=50, default='')
-    state = models.CharField(max_length=50, default='')
+    state = models.CharField(max_length=50, default='', blank=True)
     country = models.CharField(max_length=50, default='')
     transport = models.CharField(
         max_length=1,
         choices = TRANSPORT,
-        default = TRANSPORT[2][0]
+        default = TRANSPORT[2][0],
+        blank=True
     )
     lodging = models.CharField(max_length=50, default='')
-    flight = models.CharField(max_length=20, default='')
+    flight = models.CharField(max_length=20, default='', blank=True)
     activities = models.ManyToManyField(Activity, blank=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
 
