@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>How many days is your trip?</h1>
-        <form action="{% url 'days_populate' trip.id %}" method="POST">
+        <form action="{% url 'days_populate' trip.id %}" method="POST" class="mt-3">
             {% csrf_token %}
-            <input type="number" value="7" name="day_num">
-            <input type="submit" value="Create!">
+            <label class="label">How many days is your trip?</label>
+            <div class="field has-addons">
+                
+                <div class="control">
+                    <input type="number" class="input is-normal" value="7" name="day_num">
+                </div>
+                <div class="control">
+                    <input type="submit" class="button" value="Let's Go!">
+                </div>
+              </div>
         </form>
 {% endblock %}

@@ -14,6 +14,9 @@ class ActivityForm(ModelForm):
         widgets = {
             'time': forms.widgets.DateInput(attrs={'type': 'time'})
         }
+        labels = {
+                'inout': 'Inside/Outside',
+        }
         
         
 # class TripForm(ModelForm):

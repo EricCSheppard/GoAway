@@ -79,7 +79,7 @@ def day_detail(request, day_id):
             weather = res.json()
             # print(weatherf)
             weatherf = weather['current']['temp_f']
-            weather_icon = ''
+            weather_icon = ['current']['condition']['icon']
         # elif day.date < date_now:
         #     weatherf = 'Date is passed'
         #     weather_icon = ''
