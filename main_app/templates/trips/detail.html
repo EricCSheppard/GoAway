@@ -16,7 +16,7 @@
         {% endfor%}
         {% for item in weather %}
             {% if item.current %}
-            <p>Current temp F: {{ item.current.temp_f }}</p><img src="{{ item.current.condition.icon}}">
+            <p>Current temp F: {{ item.current.temp_f }}</p><img src="{{ item.current.condition.icon }}">
             {% else %}
             <p>No weather data</p>
             {% endif %}
