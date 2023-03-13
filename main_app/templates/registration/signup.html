@@ -1,31 +1,29 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 {% block content %}
-
-    <div class="control mt-2">
-        <form action="" method="POST" class="">
-        {% csrf_token %}
-        {% for hidden_field in form.hidden_fields %}
-        {{ hidden_field }}
-        {% endfor %}
-        {% if form.non_field_errors %}
-    <div class="alert alert-danger" role="alert">
-        {% for error in form.non_field_errors %}
-            {{ error }}
-        {% endfor %}
-    </div>
-    {% endif %}
-    
-        {% for field in form.visible_fields %}
-            <div class="field">
-                <label class="label">{{ field.label_tag }}</label>
-            {% render_field field class="input" %}
-            {% if field.help_text %}
-                <p class="help is-success">{{ field.help_text }}</p>
-            {% endif %}
-            </div>
-        {% endfor %}
-        <input type="submit" value="Submit" class="button is-link is-light mt-2">
-        </form>
-    </div>
+<div class="control mt-2">
+    <form action="" method="POST" class="">
+    {% csrf_token %}
+    {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+    {% endfor %}
+    {% if form.non_field_errors %}
+<div class="alert alert-danger" role="alert">
+    {% for error in form.non_field_errors %}
+        {{ error }}
+    {% endfor %}
+</div>
+{% endif %}
+    {% for field in form.visible_fields %}
+        <div class="field">
+            <label class="label">{{ field.label_tag }}</label>
+        {% render_field field class="input" %}
+        {% if field.help_text %}
+            <p class="help is-success">{{ field.help_text }}</p>
+        {% endif %}
+        </div>
+    {% endfor %}
+    <input type="submit" value="Submit" class="button is-link is-light mt-2">
+    </form>
+</div>
 {% endblock %}

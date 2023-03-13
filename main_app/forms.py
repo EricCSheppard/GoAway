@@ -18,7 +18,6 @@ class ActivityForm(ModelForm):
                 'inout': 'Inside/Outside',
         }
         
-        
 # class TripForm(ModelForm):
 #     class Meta:
 #         model = Trip

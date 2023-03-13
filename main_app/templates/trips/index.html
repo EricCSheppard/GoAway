@@ -2,8 +2,18 @@
 {% block content %}
     <h1>My Trips</h1>
     {% for trip in trips %}
-        <a href="{% url 'trip_detail' trip.id %}">{{ trip.name }}</a>
-        <p>start: {{ trip.start }}</p>
-        <hr>
+        <div class="card m-3">
+            <header class="card-header" >
+                <span class="card-header-title">Trip to {{ trip.name }}</a></span>
+                <span class="card-header-subtitle">{{ trip.start }}</span>
+            </header>
+            <div class="card-content">
+                
+            </div>
+            <footer class="card-footer">
+                <a href="{% url 'trip_detail' trip.id %}" class="card-footer-item">View trip</a>
+                <a href="{% url 'trip_delete' trip.id %}" class="card-footer-item">Cancel trip</a>
+            </footer>
+        </div>
     {% endfor %}
 {% endblock %}

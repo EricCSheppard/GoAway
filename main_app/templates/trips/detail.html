@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>Trip:</h1>
-        <p>{{ trip.name }} | start: {{ trip.start }}</p>
-        <a href="{% url 'trip_delete' trip.id %}">Cancel trip.</a>
+        <h2>Trip to {{ trip.name }} starting on {{ trip.start }}</h2>
         <hr>
         {% for day in trip.day_set.all %}
-            <a href="{% url 'day_detail' day.id %}"> Day {{ day.number }}</a>
-            <p>{{ day.date }}</p>
-            <p>{{ day.city }}</p>
+            <div class="card m-3">
+                <header class="card-header" >
+                    <span class="card-header-title">Day {{ day.number }} {% if day.city %} in {{ day.city }}{% if day.state %} {{ day.state }}, {% else %}, {% endif %}{{ day.country }} {% else %} {% endif %}</a></span>
+                    <span class="card-header-subtitle">{{ day.date }}</span>
+                </header>
+                <footer class="card-footer">
+                    <a href="{% url 'day_detail' day.id %}" class="card-footer-item">View day details</a>
+                </footer>
+            </div>
 
             <!-- {% for activity in day.activities.all %}
                 <p>{{activity.name}}</p>
             {% endfor %} -->
-            <hr>
         {% endfor%}
         {% for item in weather %}
             {% if item.current %}

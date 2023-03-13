@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Cancel Trip?</h1>
-    <h4>Are you sure you want to cancel your trip to <span>{{ object.name }}</span>?</h4>
-    <form action="" method="POST">
+    <form action="" method="POST" class="mt-3">
+        <label class="label">Are you sure you want to cancel your trip to {{ object.name }}?</label>
         {% csrf_token %}
-        <input type="submit" value="Yes">
-        <a href="{% url 'trip_detail' trip.id %}">No, take me back!</a>
+        <input type="submit" class="button" value="Yes">
+        <input type="button" class ='button' value="Go back!" onclick="history.back()">
     </form>
 {% endblock %}
