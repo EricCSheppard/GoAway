@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from datetime import date
+from django import forms
+
 
 # Create your models here.
 
@@ -26,17 +28,21 @@ INOUT = (
 
 class Activity(models.Model):
     name = models.CharField(max_length=50)
-    time = models.CharField(
-        max_length=1,
-        choices = TIMES,
-        default = TIMES[0][0]
-    )
+    time = models.TimeField()
+    # time = models.CharField(
+    #     max_length=1,
+    #     choices = TIMES,
+    #     default = TIMES[0][0]
+    # )
     inout = models.CharField(
         max_length = 1,
         choices = INOUT,
         default = INOUT[0][0]
     )
     description = models.CharField(max_length=125)
+
+    class Meta:
+        ordering = ['time']
 
     def __str__(self):
         return self.name
@@ -55,6 +61,7 @@ class Trip(models.Model):
     
     def get_absolute_url(self):
         return reverse('days_create', kwargs={'trip_id': self.id})
+    
 
 class Day(models.Model):
     number = models.IntegerField()  

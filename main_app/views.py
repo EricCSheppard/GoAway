@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 from .models import Trip, Day, Activity
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import DayForm, ActivityForm
+from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import timedelta, datetime
+from django import forms
 import requests
 
 # Create your views here.
@@ -24,16 +26,16 @@ def trip_detail(request, trip_id):
     trip = Trip.objects.get(id=trip_id)
     days = Day.objects.filter(trip_id=trip_id)
     print(days)
-    res = []
-    for day in days:
-        if day.city:
-            response = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=2235056e594342b9bfa213839230603&q={day.city}&days=1&aqi=no&alerts=no')
-            weather = response.json()
-            res.append(weather)
-        else:
-            res.append('')
-    print(res)
-    return render(request, 'trips/detail.html', { 'trip': trip, 'weather': res})
+    # res = []
+    # for day in days:
+    #     if day.city:
+    #         response = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=2235056e594342b9bfa213839230603&q={day.city}&days=1&aqi=no&alerts=no')
+    #         weather = response.json()
+    #         res.append(weather)
+    #     else:
+    #         res.append('')
+    # print(res)
+    return render(request, 'trips/detail.html', { 'trip': trip})
 
 class TripCreate(LoginRequiredMixin, CreateView):
     model = Trip
@@ -78,6 +80,9 @@ def day_detail(request, day_id):
             # print(weatherf)
             weatherf = weather['current']['temp_f']
             weather_icon = ''
+        # elif day.date < date_now:
+        #     weatherf = 'Date is passed'
+        #     weather_icon = ''
         else:
             weatherf = 'No data available'
             weather_icon = ''
@@ -135,6 +140,16 @@ def activity_detail(request, activity_id):
 class ActivityUpdate(LoginRequiredMixin, UpdateView):
     model = Activity
     fields = ['name', 'time', 'description', 'inout']
+
+# class ActivityDelete(LoginRequiredMixin, DeleteView):
+#     model = Activity
+#     success_url = reverse_lazy('day_detail')
+
+def activity_delete(request, day_id, activity_id):
+    activity = Activity.objects.get(id=activity_id)
+    print(activity)
+    activity.delete()
+    return redirect('day_detail', day_id)
 
 def signup(request):
     error_message = ''

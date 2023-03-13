@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Remove Activity?</h1>
+    <h4>Are you sure you want to remove <span>{{ object.name }}</span>?</h4>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Yes">
+        <a href="{% url 'day_detail' day.id %}">No, take me back!</a>
+    </form>
+{% endblock %}

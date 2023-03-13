@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>Day {{ day.number }} in {{ day.city }}, {{ day.state }} {{ day.country }}</h1>
+    <h3>{{day.date}}</h3>
     <hr>
     <h2>Staying at: {{ day.lodging }}</h2>
     <p>Temp(F): {{ weatherf }}</p><img src="{{ icon }}">
     <h3>activities:</h3>
     {% for activity in day.activities.all %}
     <ul>
-        <li>{{activity.name}} - {{activity.description}} - <a href="{% url 'activity_update' activity.id %}">EDIT</a></li>
+        <li>{{activity.time}} - {{activity.name}} - {{activity.description}} - <a href="{% url 'activity_delete' day.id activity.id %}">Remove</a></li>
     </ul>
     {% endfor %}
     <form action="{% url 'activity_create' day.id %}" method="POST">
