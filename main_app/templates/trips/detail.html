@@ -1,66 +1,74 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="content">
     <h1>Trip to {{ trip.name }} starting on {{ trip.start }}</h1>
     <hr>
     <div class="columns">
-        <div class="column">
-    {% for day in trip.day_set.all %}
-        
-        <div class="card m-3 
-        {% if day.date < date_now %} 
-            has-background-grey-lighter
-        {% elif day.date == date_now %} has-background-primary-light
-        {% endif %}
-        " style="width: 75%;">
-            <header class="card-header" >
-                <p class="card-header-title">Day {{ day.number }} 
-                    {% if day.city %} 
-                        in {{ day.city }},
-                        {% if day.state %} {{ day.state }} 
-                            {% else %}
-                            {% endif %}
-                        {{ day.country }} 
-                        {% else %}
-                    {% endif %}
-                    {% if day.date == date_now %} - Today!
-                    {% endif %}
-                </p>
-                <p class="card-header-subtitle m-3">{{ day.date }}</p>
-            </header>
-            {% if day.activities.count %}
-                <div class="card-content">
-                    {% for activity in day.activities.all %}
-                        <p>{{ activity.time }} - {{activity.name}}</p>
-                    {% endfor %}
-                </div>
+        <div class="column is-two-thirds">
+            <h2>Itinerary:</h2>
+            <hr>
+            {% for day in trip.day_set.all %}
+            
+            <div class="card m-3 
+            {% if day.date < date_now %} 
+                has-background-grey-lighter
+            {% elif day.date == date_now %} has-background-primary-light
             {% endif %}
-            <footer class="card-footer">
-                <a href="{% url 'day_detail' day.id %}" class="card-footer-item">View day details</a>
-            </footer>
+            " style="width: 75%;">
+                <header class="card-header" >
+                    <p class="card-header-title">Day {{ day.number }} 
+                        {% if day.city %} 
+                            in {{ day.city }},
+                            {% if day.state %} {{ day.state }} 
+                                {% else %}
+                                {% endif %}
+                            {{ day.country }} 
+                            {% else %}
+                        {% endif %}
+                        {% if day.date == date_now %} - Today!
+                        {% endif %}
+                    </p>
+                    <p class="card-header-subtitle m-3">{{ day.date }}</p>
+                </header>
+                {% if day.activities.count %}
+                    <div class="card-content">
+                        {% for activity in day.activities.all %}
+                            <p>{{ activity.time }} - {{activity.name}}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <footer class="card-footer">
+                    <a href="{% url 'day_detail' day.id %}" class="card-footer-item">View day details</a>
+                </footer>
+            </div>
+            {% endfor%}
         </div>
-    
-    {% endfor%}
+        <div class="column">
+            <h2>Photos:</h2>
+            <hr>
+            {% for photo in trip.photo_set.all %}
+                <div class="card">
+                    <img src="{{photo.url}}" alt="Photo of trip to {{ trip.name }}">
+                </div>
+                {% empty %}
+                    <div class="">No Photos yet</div>
+                    <br>
+                {% endfor %}
+                <div class="box">
+                    <form 
+                    class="card-panel"
+                    action="{% url 'add_photo' trip.id %}"
+                    method="POST"
+                    enctype="multipart/form-data" 
+                    >
+                        {% csrf_token %}
+                        <input type="file" name="photo-file" />
+                        <br/><br/>
+                        <input type="submit" class="button" value="Upload Photo">
+                    </form>
+                </div>
+        </div>
     </div>
-    <div class="column">
-        {% for photo in trip.photo_set.all %}
-                <img src="{{photo.url}}" alt="photo of trip" class="">
-            {% empty %}
-                <div class="">No Photos yet</div>
-            {% endfor %}
-            <form 
-            class="card-panel"
-            action="{% url 'add_photo' trip.id %}"
-            method="POST"
-            enctype="multipart/form-data" 
-            >
-                {% csrf_token %}
-                <label for="">Upload a file:</label>
-                <input type="file" name="photo-file" />
-                <br/><br/>
-                <input type="submit" class="button" value="Upload Photo">
-            </form>
-    </div>
-</div>
     <!-- {% for item in weather %}
         {% if item.current %}
         <p>Current temp F: {{ item.current.temp_f }}</p><img src="{{ item.current.condition.icon }}">
@@ -69,5 +77,5 @@
         {% endif %}
     {% endfor %} -->
     <!-- <a href="">Never let the party die!</a> | <a href="">Nothing gold can stay.</a> -->
-
+</div>
 {% endblock %}

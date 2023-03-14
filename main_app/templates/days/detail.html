@@ -36,7 +36,7 @@
                 {% endif %}    
             </div>
             <div class="tile is-child box">
-                <p class="title">Add item:</p>
+                <p class="title">Add to itinerary:</p>
                 <form action="{% url 'activity_create' day.id %}" method="POST">
                     {% csrf_token %}
                     {{ activity_form.as_p }}
@@ -59,7 +59,7 @@
                         </tbody>
                     </table>
                 {% else %}
-                    <p>Add some things to do using the "Add item" box!</p>
+                    <p>Add some things to do using the "Add to itinerary" box!</p>
                 {% endif %}
             </div>
         </div>
