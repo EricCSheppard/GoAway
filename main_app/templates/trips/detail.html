@@ -1,30 +1,46 @@
 {% extends 'base.html' %}
 {% block content %}
+<section class="is-medium">
     <h1>Trip to {{ trip.name }} starting on {{ trip.start }}</h1>
     <hr>
     {% for day in trip.day_set.all %}
-        <div class="card m-3 {% if day.date < date_now %} 
-        has-background-grey-lighter{% elif day.date == date_now %} has-background-primary-light
-        {% endif %}">
+        <div class="card m-3 
+        {% if day.date < date_now %} 
+            has-background-grey-lighter
+        {% elif day.date == date_now %} has-background-primary-light
+        {% endif %}
+        " style="width: 75%;">
             <header class="card-header" >
-                <p class="card-header-title">Day {{ day.number }} {% if day.city %} in {{ day.city }}{% if day.state %} {{ day.state }}, {% else %}, {% endif %}{{ day.country }} {% else %} {% endif %}</p>
+                <p class="card-header-title">Day {{ day.number }} 
+                    {% if day.city %} in {{ day.city }},
+                        {% if day.state %} {{ day.state }} 
+                            {% else %}
+                            {% endif %}
+                        {{ day.country }} 
+                        {% else %}
+                    {% endif %}</p>
                 <p class="card-header-subtitle">{{ day.date }}</p>
             </header>
+            {% if day.activities.count %}
+                <div class="card-content">
+                    {% for activity in day.activities.all %}
+                        <p>{{ activity.time }} - {{activity.name}}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <footer class="card-footer">
                 <a href="{% url 'day_detail' day.id %}" class="card-footer-item">View day details</a>
             </footer>
         </div>
-
-        <!-- {% for activity in day.activities.all %}
-            <p>{{activity.name}}</p>
-        {% endfor %} -->
+        
     {% endfor%}
-    {% for item in weather %}
+    <!-- {% for item in weather %}
         {% if item.current %}
         <p>Current temp F: {{ item.current.temp_f }}</p><img src="{{ item.current.condition.icon }}">
         {% else %}
         <p>No weather data</p>
         {% endif %}
-    {% endfor %}
+    {% endfor %} -->
     <!-- <a href="">Never let the party die!</a> | <a href="">Nothing gold can stay.</a> -->
+</section>
 {% endblock %}

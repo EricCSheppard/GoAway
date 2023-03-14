@@ -150,7 +150,7 @@ class ActivityUpdate(LoginRequiredMixin, UpdateView):
 
 def activity_delete(request, day_id, activity_id):
     activity = Activity.objects.get(id=activity_id)
-    print(activity)
+    # print(activity)
     activity.delete()
     return redirect('day_detail', day_id)
 

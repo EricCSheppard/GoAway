@@ -1,12 +1,25 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     <div class="tile is-ancestor">
         <div class="tile is-4 is-vertical is-parent">
             <div class="tile is-child box">
-                {% if day.city %}<p class="title">Day {{ day.number }}  in {{ day.city }}</p> {% else %}
-                <p class="subtitle">Add a city using the Edit Day button!</p> {% endif %}
-                <p class="subtitle">{{ day.date }}</p>
-                <p>{% if day.lodging %} Staying at: <strong>{{ day.lodging }}</strong><br/> <a href="https://maps.google.com?q={{ day.address }}" target="_blank">Map</a> {% else %} {% endif %}</p>
+                {% if day.city %}
+                    <p class="title">Day {{ day.number }}  in {{ day.city }}</p> 
+                {% else %}
+                    <p class="subtitle">Add a city using the Edit Day button!</p> 
+                {% endif %}
+                    <p class="subtitle">{{ day.date }}</p>
+                {% if day.lodging %} 
+                    <p>Staying at: <strong>{{ day.lodging }}</strong></p>
+                    <br/>
+                {% endif %} 
+                {% if day.address %}
+                    <p><a href="https://maps.google.com?q={{ day.address }}" target="_blank">{{ day.address }}</a><img src="{% static 'images/external_link48.png' %}" alt="external link icon" width="24px" height="24px"></p>
+                {% endif %}
+                {% if day.flight %}
+                    <p><a href="https://flightaware.com/live/flight/{{ day.flight }}" target="_blank">Track Flight {{ day.flight }}</a><img src="{% static 'images/external_link48.png' %}" alt="external link icon" width="24px" height="24px"></p>
+                {% endif %}
             </div>
             <div class="tile is-child box">
                 <div class="columns">
@@ -34,19 +47,19 @@
             <div class="tile is-child box">
             <p class="title">Day {{ day.number }} Itinerary:</p>
                 {% if day.activities.count %}
-                <table class="table is-hoverable">
-                    <thead>
-                        <tr><th>Time</th><th>Name</th><th>Description</th><th></th></tr>
-                    </thead>
-                    <tbody>
-                        {% for activity in day.activities.all %}
-                        <tr class="{% if weather.daily_will_it_rain == 1 and activity.inout == 'O' %}
-                        has-background-danger-light{% else %} {% endif %}"><td>{{activity.time}}</td><td><strong>{{activity.name}}</strong></td><td>{{activity.description}}</td><td><a href="{% url 'activity_delete' day.id activity.id %}" class="delete"></a></td></tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                    <table class="table is-hoverable">
+                        <thead>
+                            <tr><th>Time</th><th>Name</th><th>Description</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                            {% for activity in day.activities.all %}
+                                <tr class="{% if weather.daily_will_it_rain == 1 and activity.inout == 'O' %}
+                                has-background-danger-light{% else %} {% endif %}"><td>{{activity.time}}</td><td><strong>{{activity.name}}</strong></td><td>{{activity.description}}</td><td><a href="{% url 'activity_delete' day.id activity.id %}" class="delete"></a></td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 {% else %}
-                <p>Add some things to do using the "Add item" box!</p>
+                    <p>Add some things to do using the "Add item" box!</p>
                 {% endif %}
             </div>
         </div>

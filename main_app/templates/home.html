@@ -4,6 +4,6 @@
     <p>Welcome back!</p>
 {% else %}
     <h1>Welcome to GO AWAY!</h1>
-    <p>Please <a href="{% url 'signup' %}">Sign up</a> or <a href="{% url 'login' %}">Log in!</a></p>
+    <p>Please <a href="{% url 'signup' %}" class="button">Sign up</a> or <a href="{% url 'login' %}" class="button">Log in!</a></p>
 {% endif %}
 {% endblock %}

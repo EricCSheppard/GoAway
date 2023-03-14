@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
+
     {% if trips %}
-    <h1>My Trips:</h1>
     {% for trip in trips %}
-        <div class="card m-3">
+        <div class="card m-3 " style="width: 75%;">
             <header class="card-header" >
                 <span class="card-header-title">Trip to {{ trip.name }}</a></span>
-                <span class="card-header-subtitle">{{ trip.start }}</span>
+                <span class="card-header-subtitle">Start date: <strong>{{ trip.start }}</strong></span>
             </header>
             <div class="card-content">
                 

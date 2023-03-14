@@ -1,4 +1,4 @@
-{% load static widget_tweaks %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,116 +6,113 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>Go Away</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <title>Go Away!</title>
 </head>
-<body>
-    <header>
-        <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <a class="navbar-item" href="{% url 'home' %}">
-                    <span>Go Away</span>
-                    
-                </a>
-            
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-                </div>
-            
-                <div id="navbarBasicExample" class="navbar-menu">
-                <div class="navbar-start">
+    <body>
+        <header>
+            <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
                     <a class="navbar-item" href="{% url 'home' %}">
-                    Home
+                        <span><strong>Go Away!</strong></span>
                     </a>
-                    {% if user.is_authenticated %}
-                    <a class="navbar-item" href="{% url 'trip_index' %}">
-                        View My Trips
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
                     </a>
-                    <a class="navbar-item" href="{% url 'trip_create' %}">
-                        Add a Trip
-                    </a>
-                    {% else %}
-                    {% endif %}
-            
-                    <!-- <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        More
-                    </a> -->
-            
-                    <!-- <div class="navbar-dropdown">
-                        <a class="navbar-item">
-                        About
-                        </a>
-                        <a class="navbar-item">
-                        Jobs
-                        </a>
-                        <a class="navbar-item">
-                        Contact
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item">
-                        Report an issue
-                        </a>
-                    </div> -->
                     </div>
-                </div>
-                <div class="navbar-end">
-                    <div class="navbar-item">
-                        <div class="buttons">
+                    <div id="navbarBasicExample" class="navbar-menu">
+                        <div class="navbar-start">
+                            <a class="navbar-item" href="{% url 'home' %}">
+                            Home
+                            </a>
                             {% if user.is_authenticated %}
-                                <a class="button is-light" href="{% url 'logout' %}">
-                                    Log out
-                                </a>
+                            <a class="navbar-item" href="{% url 'trip_index' %}">
+                                View My Trips
+                            </a>
+                            <a class="navbar-item" href="{% url 'trip_create' %}">
+                                Add a Trip
+                            </a>
                             {% else %}
-                            <a class="button is-primary" href="{% url 'signup' %}">
-                                <strong>Sign up</strong>
-                            </a>
-                            <a class="button is-light" href="{% url 'login' %}">
-                                Log in
-                            </a>
                             {% endif %}
+                    
+                            <!-- <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">
+                                More
+                            </a> -->
+                    
+                            <!-- <div class="navbar-dropdown">
+                                <a class="navbar-item">
+                                About
+                                </a>
+                                <a class="navbar-item">
+                                Jobs
+                                </a>
+                                <a class="navbar-item">
+                                Contact
+                                </a>
+                                <hr class="navbar-divider">
+                                <a class="navbar-item">
+                                Report an issue
+                                </a>
+                            </div> -->
+                            </div>
+                        </div>
+                        <div class="navbar-end">
+                            <div class="navbar-item">
+                                <div class="buttons">
+                                    {% if user.is_authenticated %}
+                                        <a class="button is-light" href="{% url 'logout' %}">
+                                            Log out
+                                        </a>
+                                    {% else %}
+                                    <a class="button is-light" href="{% url 'signup' %}">
+                                        Sign up
+                                    </a>
+                                    <a class="button is-light" href="{% url 'login' %}">
+                                        Log in
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </nav>
+        </header>
+        <main>
+            <section class="section">
+                <div class="container">
+                    {% block content %}
+                    {% endblock %}
                 </div>
-                </div>
-            </nav>
-    </header>
-    <main>
-        <div class="container">
-            <section class="section is-medium">
-            {% block content %}
-            {% endblock %}
             </section>
-        </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
 
-                // Get all "navbar-burger" elements
-                const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
-            
-                // Add a click event on each of them
-                $navbarBurgers.forEach( el => {
-                el.addEventListener('click', () => {
-            
-                    // Get the target from the "data-target" attribute
-                    const target = el.dataset.target;
-                    const $target = document.getElementById(target)
-            
-                    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-                    el.classList.toggle('is-active')
-                    $target.classList.toggle('is-active')
-            
+                    // Get all "navbar-burger" elements
+                    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0)
+                
+                    // Add a click event on each of them
+                    $navbarBurgers.forEach( el => {
+                    el.addEventListener('click', () => {
+                
+                        // Get the target from the "data-target" attribute
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target)
+                
+                        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                        el.classList.toggle('is-active')
+                        $target.classList.toggle('is-active')
+                
+                    })
+                    })
+                
                 })
-                })
-            
-            })
-        </script>
-    </main>
-    <footer class="footer">
-    <div class="">Created by Eric Sheppard</div>
-    </footer>
-</body>
+            </script>
+        </main>
+        <footer class="footer mt-auto">
+        <div class="">Created by <a href="https://github.com/EricCSheppard/GoAway" target="_blank">Eric Sheppard</a></div>
+        </footer>
+    </body>
 </html>

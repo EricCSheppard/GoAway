@@ -71,7 +71,7 @@ class Day(models.Model):
         blank=True
     )
     lodging = models.CharField(max_length=50, default='')
-    address = models.CharField(max_length=70, default='')
+    address = models.CharField(max_length=70, default='', blank=True)
     flight = models.CharField(max_length=20, default='', blank=True)
     activities = models.ManyToManyField(Activity, blank=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
