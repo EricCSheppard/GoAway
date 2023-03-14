@@ -1,21 +1,48 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Day {{ day.number }} in {{ day.city }}, {{ day.state }} {{ day.country }}</h1>
-    <h3>{{day.date}}</h3>
-    <hr>
+
+    <div class="tile is-ancestor">
+        <div class="tile is-4 is-vertical is-parent">
+            <div class="tile is-child box">
+                <p class="title">Day {{ day.number }} in {{ day.city }}</p>
+                <p class="subtitle">{{ day.date }}</p>
+                <p>Staying at: {{ day.lodging }}</p>
+            </div>
+            <div class="tile is-child box">
+                <div class="columns">
+                    <div class="title column">Weather:</div>
+                    <div class="column"><img class="right" src="{{ icon }}"></div>
+                </div>
+                <p>High temp F: {{ weather.maxtemp_f }}</p>
+                <p>Low temp F: {{ weather.mintemp_f }}</p>
+                <p> {{ weather.condition.text }}</p>
+                </div>
+            </div>
+            
+        <div class="tile is-parent">
+            <div class="tile is-child box">
+            <p class="title">Itinerary:</p>
+                {% for activity in day.activities.all %}
+                    <ul>
+                        <li>{{activity.time}} - <strong>{{activity.name}}</strong> - {{activity.description}} - <a href="{% url 'activity_delete' day.id activity.id %}">Remove</a></li>{% if weather.daily_will_it_rain == 1 and activity.inout == 'O' %}
+                        <span class="has-text-danger-dark">WEATHER</span> {% else %} {% endif %}
+                    </ul>   
+                {% endfor %}
+            </div>
+        
+        </div>
+    </div>
     <h2>Staying at: {{ day.lodging }}</h2>
-    <p>Temp(F): {{ weatherf }}</p><img src="{{ icon }}">
-    <h3>activities:</h3>
-    {% for activity in day.activities.all %}
-    <ul>
-        <li>{{activity.time}} - {{activity.name}} - {{activity.description}} - <a href="{% url 'activity_delete' day.id activity.id %}">Remove</a></li>
-    </ul>
-    {% endfor %}
+    <p>Low Temp(F): {{ weather.avgtemp_f }}</p>
+    <h3>Itinerary:</h3>
+    
     <form action="{% url 'activity_create' day.id %}" method="POST">
         {% csrf_token %}
         {{ activity_form.as_p }}
-        <input type="submit" class="button" value="Add Activity">
+        <input type="submit" class="button" value="Add item">
     <hr>
-    <a href="{% url 'day_update' day.id %}">Edit Day</a>
-    <a href="{% url 'trip_detail' day.trip_id %}">Back to trip</a>
+    <div class="buttons has-addons">
+        <a href="{% url 'day_update' day.id %}" class="button has-background-info-light">Edit Day</a>
+        <a href="{% url 'trip_detail' day.trip_id %}" class="button has-background-info-light">Back to trip</a>
+    </div>
 {% endblock %}

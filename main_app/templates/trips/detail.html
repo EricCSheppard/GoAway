@@ -1,29 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Trip:</h1>
-        <h2>Trip to {{ trip.name }} starting on {{ trip.start }}</h2>
-        <hr>
-        {% for day in trip.day_set.all %}
-            <div class="card m-3">
-                <header class="card-header" >
-                    <span class="card-header-title">Day {{ day.number }} {% if day.city %} in {{ day.city }}{% if day.state %} {{ day.state }}, {% else %}, {% endif %}{{ day.country }} {% else %} {% endif %}</a></span>
-                    <span class="card-header-subtitle">{{ day.date }}</span>
-                </header>
-                <footer class="card-footer">
-                    <a href="{% url 'day_detail' day.id %}" class="card-footer-item">View day details</a>
-                </footer>
-            </div>
+    <h1>Trip to {{ trip.name }} starting on {{ trip.start }}</h1>
+    <hr>
+    {% for day in trip.day_set.all %}
+        <div class="card m-3">
+            <header class="card-header" >
+                <p class="card-header-title">Day {{ day.number }} {% if day.city %} in {{ day.city }}{% if day.state %} {{ day.state }}, {% else %}, {% endif %}{{ day.country }} {% else %} {% endif %}</p>
+                <p class="card-header-subtitle">{{ day.date }}</p>
+            </header>
+            <footer class="card-footer">
+                <a href="{% url 'day_detail' day.id %}" class="card-footer-item">View day details</a>
+            </footer>
+        </div>
 
-            <!-- {% for activity in day.activities.all %}
-                <p>{{activity.name}}</p>
-            {% endfor %} -->
-        {% endfor%}
-        {% for item in weather %}
-            {% if item.current %}
-            <p>Current temp F: {{ item.current.temp_f }}</p><img src="{{ item.current.condition.icon }}">
-            {% else %}
-            <p>No weather data</p>
-            {% endif %}
-        {% endfor %}
-        <!-- <a href="">Never let the party die!</a> | <a href="">Nothing gold can stay.</a> -->
+        <!-- {% for activity in day.activities.all %}
+            <p>{{activity.name}}</p>
+        {% endfor %} -->
+    {% endfor%}
+    {% for item in weather %}
+        {% if item.current %}
+        <p>Current temp F: {{ item.current.temp_f }}</p><img src="{{ item.current.condition.icon }}">
+        {% else %}
+        <p>No weather data</p>
+        {% endif %}
+    {% endfor %}
+    <!-- <a href="">Never let the party die!</a> | <a href="">Nothing gold can stay.</a> -->
 {% endblock %}

@@ -58,41 +58,42 @@ def day_detail(request, day_id):
     # print(day.date)
     # print(date_now)
     if day.city:
-        # if the date is more than 14 days, get future info:
-        if day.date > date_now + timedelta(days=14):
-            res = requests.get(f'http://api.weatherapi.com/v1/future.json?key=2235056e594342b9bfa213839230603&q={ day.city } {day.country}&dt={day.date}')
-            weather = res.json()
-            weatherf = weather['forecast']['forecastday'][0]['day']['avgtemp_f']
+        if day.date < date_now:
+            weatherinfo = 'Date is passed'
             weather_icon = ''
-            print(weatherf)
-        # if the date is between now and 14 days, get forecast plus icon:
-        elif day.date < date_now + timedelta(days=14):
-            res = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=2235056e594342b9bfa213839230603&q={ day.city } {day.country}&dt={day.date}')
-            weather = res.json()
-            weatherf = weather['forecast']['forecastday'][0]['day']['avgtemp_f']
-            weather_icon = weather['forecast']['forecastday'][0]['day']['condition']['icon']
-            print(weather_icon)
-            # print(weatherf)
-        # if the date is today get current weather:
-        elif day.date == date_now:
-            res = requests.get(f'http://api.weatherapi.com/v1/current.json?key=2235056e594342b9bfa213839230603&q={ day.city} { day.country}&aqi=no')
-            weather = res.json()
-            # print(weatherf)
-            weatherf = weather['current']['temp_f']
-            weather_icon = ['current']['condition']['icon']
-        # elif day.date < date_now:
-        #     weatherf = 'Date is passed'
-        #     weather_icon = ''
         else:
-            weatherf = 'No data available'
-            weather_icon = ''
+        # if the date is more than 14 days, get future info:
+            if day.date > date_now + timedelta(days=14):
+                res = requests.get(f'http://api.weatherapi.com/v1/future.json?key=2235056e594342b9bfa213839230603&q={ day.city } {day.country}&dt={day.date}')
+                weather = res.json()
+                weatherinfo = weather['forecast']['forecastday'][0]['day']
+                weather_icon = ''
+                # print(weatherinfo)
+            # if the date is between now and 14 days, get forecast plus icon:
+            elif day.date <= date_now + timedelta(days=14):
+                res = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=2235056e594342b9bfa213839230603&q={ day.city } {day.country}&dt={day.date}')
+                weather = res.json()
+                weatherinfo = weather['forecast']['forecastday'][0]['day']
+                weather_icon = weather['forecast']['forecastday'][0]['day']['condition']['icon']
+                print(weather_icon)
+                # print(weatherf)
+            # if the date is today get current weather:
+            # elif day.date == date_now:
+            #     res = requests.get(f'http://api.weatherapi.com/v1/.json?key=2235056e594342b9bfa213839230603&q={ day.city} { day.country}&aqi=no')
+            #     weather = res.json()
+            #     # print(weatherf)
+            #     weatherf = weather['current']['temp_f']
+            #     weather_icon = ['current']['condition']['icon']
+            else:
+                weatherinfo = 'No data available'
+                weather_icon = ''
     else:
-        weatherf = 'Please add location'
+        weatherinfo = 'Please add location'
         weather_icon = ''
     # print(res)
     # weather = res.json()
     # print(weather2)
-    return render(request, 'days/detail.html', { 'day': day, 'activity_form': activity_form, 'weatherf': weatherf, 'icon': weather_icon} )
+    return render(request, 'days/detail.html', { 'day': day, 'activity_form': activity_form, 'weather': weatherinfo, 'icon': weather_icon} )
 
 @login_required
 def days_create(request, trip_id):
