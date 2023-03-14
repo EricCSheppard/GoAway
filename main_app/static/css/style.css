@@ -2,33 +2,39 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column; 
+    /* background-color: rgb(9, 143, 143); */
+    background-color: rgb(220, 231, 252);
 }
 main {
     flex: 1 0 auto;
 }
 
-.navbar {
-    background-color: antiquewhite;
+.mainfont {
+    font-family: 'Shrikhand', cursive;
+    font-size: 12rem;
 }
 
-.tooltip {
-
-    }
+.mainbg {
     
-.tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 0;
-    
-        /* Position the tooltip */
-        position: absolute;
-        z-index: 1;
 }
-    
-.tooltip:hover .tooltiptext {
-        visibility: visible;
+
+.flier {
+	pointer-events: none;
+}
+
+.flier > * {
+/* Adjust animation duration to change the element’s speed */
+    animation: fly 5s linear 1;
+    pointer-events: none !important;
+	top: 40%;
+	left: 50%;
+	position: fixed;
+	z-index: 999999;
+}
+
+@keyframes fly {
+
+	0% {
+		transform: translate(-100vw, 0);
+	}
 }

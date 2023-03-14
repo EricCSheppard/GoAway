@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-{% if user.is_authenticated %}
-    <p>Welcome back!</p>
-{% else %}
-    <h1>Welcome to GO AWAY!</h1>
-    <p>Please <a href="{% url 'signup' %}" class="button">Sign up</a> or <a href="{% url 'login' %}" class="button">Log in!</a></p>
+    <div class="flier"><img src="{% static 'images/plane.png' %}" alt="A plane flying across the page"></div>
+    <h1 class="mainfont">Go Away</h1>
+    {% if user.is_authenticated %}
+        
+    {% else %}
+
+    <div class="buttons has-addons">
+        <a href="{% url 'signup' %}" class="button has-background-info-light">Sign up</a>
+        <a href="{% url 'login' %}" class="button has-background-info-light">Log in</a>
+    </div>
 {% endif %}
 {% endblock %}

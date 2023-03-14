@@ -30,15 +30,15 @@
                     </p>
                     <p class="card-header-subtitle m-3">{{ day.date }}</p>
                 </header>
-                {% if day.activities.count %}
+                <!-- {% if day.activities.count %}
                     <div class="card-content">
                         {% for activity in day.activities.all %}
                             <p>{{ activity.time }} - {{activity.name}}</p>
                         {% endfor %}
                     </div>
-                {% endif %}
+                {% endif %} -->
                 <footer class="card-footer">
-                    <a href="{% url 'day_detail' day.id %}" class="card-footer-item">View day details</a>
+                    <a href="{% url 'day_detail' day.id %}" class="card-footer-item"><strong>View day details</strong></a>
                 </footer>
             </div>
             {% endfor%}

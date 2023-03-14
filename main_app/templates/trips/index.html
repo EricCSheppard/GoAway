@@ -8,12 +8,12 @@
                 <span class="card-header-title">Trip to {{ trip.name }}</a></span>
                 <span class="card-header-subtitle m-3">Start date: <strong>{{ trip.start }} </strong></span>
             </header>
-            <div class="card-content">
+            <!-- <div class="card-content">
                 
-            </div>
+            </div> -->
             <footer class="card-footer">
-                <a href="{% url 'trip_detail' trip.id %}" class="card-footer-item">View trip</a>
-                <a href="{% url 'trip_delete' trip.id %}" class="card-footer-item">Cancel trip</a>
+                <a href="{% url 'trip_detail' trip.id %}" class="card-footer-item"><strong>View trip</strong></a>
+                <a href="{% url 'trip_delete' trip.id %}" class="card-footer-item"><strong>Cancel trip</strong></a>
             </footer>
         </div>
     {% endfor %}
