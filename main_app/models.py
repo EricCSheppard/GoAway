@@ -29,11 +29,6 @@ INOUT = (
 class Activity(models.Model):
     name = models.CharField(max_length=50)
     time = models.TimeField()
-    # time = models.CharField(
-    #     max_length=1,
-    #     choices = TIMES,
-    #     default = TIMES[0][0]
-    # )
     inout = models.CharField(
         max_length = 1,
         choices = INOUT,
@@ -76,6 +71,7 @@ class Day(models.Model):
         blank=True
     )
     lodging = models.CharField(max_length=50, default='')
+    address = models.CharField(max_length=70, default='')
     flight = models.CharField(max_length=20, default='', blank=True)
     activities = models.ManyToManyField(Activity, blank=True)
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)

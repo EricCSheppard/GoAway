@@ -6,7 +6,7 @@
                 {% if day.city %}<p class="title">Day {{ day.number }}  in {{ day.city }}</p> {% else %}
                 <p class="subtitle">Add a city using the Edit Day button!</p> {% endif %}
                 <p class="subtitle">{{ day.date }}</p>
-                <p>{% if day.lodging %} Staying at: {{ day.lodging }} {% else %} {% endif %}</p>
+                <p>{% if day.lodging %} Staying at: <strong>{{ day.lodging }}</strong><br/> <a href="https://maps.google.com?q={{ day.address }}" target="_blank">Map</a> {% else %} {% endif %}</p>
             </div>
             <div class="tile is-child box">
                 <div class="columns">

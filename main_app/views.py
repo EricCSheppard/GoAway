@@ -125,7 +125,7 @@ def days_populate(request, trip_id):
 
 class DayUpdate(LoginRequiredMixin, UpdateView):
     model = Day
-    fields = ['city', 'state', 'country', 'transport', 'lodging', 'flight']
+    fields = ['city', 'state', 'country', 'transport', 'lodging', 'address', 'flight']
 
 @login_required
 def activity_create(request, day_id):
