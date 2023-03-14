@@ -12,14 +12,18 @@
         " style="width: 75%;">
             <header class="card-header" >
                 <p class="card-header-title">Day {{ day.number }} 
-                    {% if day.city %} in {{ day.city }},
+                    {% if day.city %} 
+                        in {{ day.city }},
                         {% if day.state %} {{ day.state }} 
                             {% else %}
                             {% endif %}
                         {{ day.country }} 
                         {% else %}
-                    {% endif %}</p>
-                <p class="card-header-subtitle">{{ day.date }}</p>
+                    {% endif %}
+                    {% if day.date == date_now %} - Today!
+                    {% endif %}
+                </p>
+                <p class="card-header-subtitle m-3">{{ day.date }}</p>
             </header>
             {% if day.activities.count %}
                 <div class="card-content">
@@ -32,7 +36,6 @@
                 <a href="{% url 'day_detail' day.id %}" class="card-footer-item">View day details</a>
             </footer>
         </div>
-        
     {% endfor%}
     <!-- {% for item in weather %}
         {% if item.current %}
