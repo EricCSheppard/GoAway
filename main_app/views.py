@@ -25,6 +25,7 @@ def trip_index(request):
 def trip_detail(request, trip_id):
     trip = Trip.objects.get(id=trip_id)
     days = Day.objects.filter(trip_id=trip_id)
+    date_now = datetime.now().date()
     print(days)
     # res = []
     # for day in days:
@@ -35,7 +36,7 @@ def trip_detail(request, trip_id):
     #     else:
     #         res.append('')
     # print(res)
-    return render(request, 'trips/detail.html', { 'trip': trip})
+    return render(request, 'trips/detail.html', { 'trip': trip, 'date_now': date_now})
 
 class TripCreate(LoginRequiredMixin, CreateView):
     model = Trip
@@ -58,8 +59,9 @@ def day_detail(request, day_id):
     # print(day.date)
     # print(date_now)
     if day.city:
+        # if date is passed, do not call the api
         if day.date < date_now:
-            weatherinfo = 'Date is passed'
+            weatherinfo = ''
             weather_icon = ''
         else:
         # if the date is more than 14 days, get future info:
@@ -69,7 +71,7 @@ def day_detail(request, day_id):
                 weatherinfo = weather['forecast']['forecastday'][0]['day']
                 weather_icon = ''
                 # print(weatherinfo)
-            # if the date is between now and 14 days, get forecast plus icon:
+            # if the date is between today and 14 days from today, get forecast plus icon:
             elif day.date <= date_now + timedelta(days=14):
                 res = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=2235056e594342b9bfa213839230603&q={ day.city } {day.country}&dt={day.date}')
                 weather = res.json()
@@ -85,10 +87,10 @@ def day_detail(request, day_id):
             #     weatherf = weather['current']['temp_f']
             #     weather_icon = ['current']['condition']['icon']
             else:
-                weatherinfo = 'No data available'
+                weatherinfo = ''
                 weather_icon = ''
     else:
-        weatherinfo = 'Please add location'
+        weatherinfo = ''
         weather_icon = ''
     # print(res)
     # weather = res.json()

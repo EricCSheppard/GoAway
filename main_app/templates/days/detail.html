@@ -1,46 +1,56 @@
 {% extends 'base.html' %}
 {% block content %}
-
     <div class="tile is-ancestor">
         <div class="tile is-4 is-vertical is-parent">
             <div class="tile is-child box">
-                <p class="title">Day {{ day.number }} in {{ day.city }}</p>
+                {% if day.city %}<p class="title">Day {{ day.number }}  in {{ day.city }}</p> {% else %}
+                <p class="subtitle">Add a city using the Edit Day button!</p> {% endif %}
                 <p class="subtitle">{{ day.date }}</p>
-                <p>Staying at: {{ day.lodging }}</p>
+                <p>{% if day.lodging %} Staying at: {{ day.lodging }} {% else %} {% endif %}</p>
             </div>
             <div class="tile is-child box">
                 <div class="columns">
                     <div class="title column">Weather:</div>
                     <div class="column"><img class="right" src="{{ icon }}"></div>
                 </div>
-                <p>High temp F: {{ weather.maxtemp_f }}</p>
-                <p>Low temp F: {{ weather.mintemp_f }}</p>
-                <p> {{ weather.condition.text }}</p>
-                </div>
+                {% if day.city %}
+                    <p> "{{ weather.condition.text }}"</p>
+                    <br/>
+                    <p><strong>High temp (F):</strong> {{ weather.maxtemp_f }}</p>
+                    <p><strong>Low temp (F):</strong> {{ weather.mintemp_f }}</p>
+                {% else %}
+                    <p>No location information yet</p>
+                {% endif %}    
             </div>
-            
+            <div class="tile is-child box">
+                <p class="title">Add item:</p>
+                <form action="{% url 'activity_create' day.id %}" method="POST">
+                    {% csrf_token %}
+                    {{ activity_form.as_p }}
+                <input type="submit" class="button is-small has-background-info-light mt-2" value="Add to itinerary">
+            </div>
+        </div>
         <div class="tile is-parent">
             <div class="tile is-child box">
-            <p class="title">Itinerary:</p>
-                {% for activity in day.activities.all %}
-                    <ul>
-                        <li>{{activity.time}} - <strong>{{activity.name}}</strong> - {{activity.description}} - <a href="{% url 'activity_delete' day.id activity.id %}">Remove</a></li>{% if weather.daily_will_it_rain == 1 and activity.inout == 'O' %}
-                        <span class="has-text-danger-dark">WEATHER</span> {% else %} {% endif %}
-                    </ul>   
-                {% endfor %}
+            <p class="title">Day {{ day.number }} Itinerary:</p>
+                {% if day.activities.count %}
+                <table class="table is-hoverable">
+                    <thead>
+                        <tr><th>Time</th><th>Name</th><th>Description</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        {% for activity in day.activities.all %}
+                        <tr class="{% if weather.daily_will_it_rain == 1 and activity.inout == 'O' %}
+                        has-background-danger-light{% else %} {% endif %}"><td>{{activity.time}}</td><td><strong>{{activity.name}}</strong></td><td>{{activity.description}}</td><td><a href="{% url 'activity_delete' day.id activity.id %}" class="delete"></a></td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>Add some things to do using the "Add item" box!</p>
+                {% endif %}
             </div>
-        
         </div>
     </div>
-    <h2>Staying at: {{ day.lodging }}</h2>
-    <p>Low Temp(F): {{ weather.avgtemp_f }}</p>
-    <h3>Itinerary:</h3>
-    
-    <form action="{% url 'activity_create' day.id %}" method="POST">
-        {% csrf_token %}
-        {{ activity_form.as_p }}
-        <input type="submit" class="button" value="Add item">
-    <hr>
     <div class="buttons has-addons">
         <a href="{% url 'day_update' day.id %}" class="button has-background-info-light">Edit Day</a>
         <a href="{% url 'trip_detail' day.trip_id %}" class="button has-background-info-light">Back to trip</a>
