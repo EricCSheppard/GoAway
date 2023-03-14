@@ -24,6 +24,9 @@ urlpatterns = [
     path('activity/<int:activity_id>', views.activity_detail, name='activity_detail'),
     
     # Auth
-    path('accounts/signup/', views.signup, name='signup') 
+    path('accounts/signup/', views.signup, name='signup'),
+
+    # Photos
+    path('trips/<int:trip_id>/add_photo', views.add_photo, name='add_photo')
     
 ]

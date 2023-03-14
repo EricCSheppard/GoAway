@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="is-medium">
     <h1>Trip to {{ trip.name }} starting on {{ trip.start }}</h1>
     <hr>
+    <div class="columns">
+        <div class="column">
     {% for day in trip.day_set.all %}
+        
         <div class="card m-3 
         {% if day.date < date_now %} 
             has-background-grey-lighter
@@ -36,7 +38,29 @@
                 <a href="{% url 'day_detail' day.id %}" class="card-footer-item">View day details</a>
             </footer>
         </div>
+    
     {% endfor%}
+    </div>
+    <div class="column">
+        {% for photo in trip.photo_set.all %}
+                <img src="{{photo.url}}" alt="photo of trip" class="">
+            {% empty %}
+                <div class="">No Photos yet</div>
+            {% endfor %}
+            <form 
+            class="card-panel"
+            action="{% url 'add_photo' trip.id %}"
+            method="POST"
+            enctype="multipart/form-data" 
+            >
+                {% csrf_token %}
+                <label for="">Upload a file:</label>
+                <input type="file" name="photo-file" />
+                <br/><br/>
+                <input type="submit" class="button" value="Upload Photo">
+            </form>
+    </div>
+</div>
     <!-- {% for item in weather %}
         {% if item.current %}
         <p>Current temp F: {{ item.current.temp_f }}</p><img src="{{ item.current.condition.icon }}">
@@ -45,5 +69,5 @@
         {% endif %}
     {% endfor %} -->
     <!-- <a href="">Never let the party die!</a> | <a href="">Nothing gold can stay.</a> -->
-</section>
+
 {% endblock %}

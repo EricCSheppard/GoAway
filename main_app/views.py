@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Trip, Day, Activity
+from .models import Trip, Day, Activity, Photo
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import DayForm, ActivityForm
 from django.urls import reverse_lazy
@@ -9,7 +9,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import timedelta, datetime
 from django import forms
+import uuid
+import boto3
+from django.conf import settings
 import requests
+
+AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY
+AWS_SECRET_ACCESS_KEY = settings.AWS_SECRET_ACCESS_KEY
+S3_BUCKET = settings.S3_BUCKET
+S3_BASE_URL = settings.S3_BASE_URL
 
 # Create your views here.
 
@@ -153,6 +161,33 @@ def activity_delete(request, day_id, activity_id):
     # print(activity)
     activity.delete()
     return redirect('day_detail', day_id)
+
+@login_required
+def add_photo(request, trip_id):
+    # photo-file will be the name attribute of our form input
+    photo_file = request.FILES.get('photo-file', None)
+    # use conditional logic to make sure a file is present
+    if photo_file: 
+        s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        # create a unique key for our photos
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # we're going to use try...except which is just like try...catch in js
+        # to handle the situation if anything should go wrong
+        try:
+            s3.upload_fileobj(photo_file, S3_BUCKET, key)
+            # build the full url string to upload to s3
+            url = f'{S3_BASE_URL}{S3_BUCKET}/{key}'
+            # if our upload(that used boto3) was successful
+            # we want to use that photo location to create a photo model
+            photo = Photo(url=url, trip_id=trip_id)
+            # save the instance to the db
+            photo.save()
+        except Exception as error:
+            # print an error message
+            print('Error uploading photo', error)
+            return redirect('detail', trip_id=trip_id)
+    # upon success redirect to detail page
+    return redirect('trip_detail', trip_id=trip_id)
 
 def signup(request):
     error_message = ''
