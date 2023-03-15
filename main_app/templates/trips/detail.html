@@ -9,15 +9,13 @@
             <hr>
             {% for day in trip.day_set.all %}
             
-            <div class="card m-3" style="width: 75%;">
-                <header class="card-header 
-                    {% if day.date < date_now %} 
-                        has-background-grey-lighter
-                    {% elif day.date == date_now %} 
-                        has-background-primary-light
-                    {% else %}
-                        has-background-success-light
-                    {% endif %}" >
+            <div class="card m-3 
+            {% if day.date < date_now %} 
+                has-background-grey-lighter
+            {% elif day.date == date_now %} has-background-primary-light
+            {% endif %}
+            " style="width: 75%;">
+                <header class="card-header" >
                     <p class="card-header-title">Day {{ day.number }} 
                         {% if day.city %} 
                             in {{ day.city }},
