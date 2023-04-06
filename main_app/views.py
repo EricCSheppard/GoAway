@@ -38,7 +38,7 @@ def trip_detail(request, trip_id):
     # res = []
     # for day in days:
     #     if day.city:
-    #         response = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=9da560b0b23b45e4a16160600230604={day.city}&days=1&aqi=no&alerts=no')
+    #         response = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=9da560b0b23b45e4a16160600230604&q={day.city}&days=1&aqi=no&alerts=no')
     #         weather = response.json()
     #         res.append(weather)
     #     else:
@@ -79,14 +79,14 @@ def day_detail(request, day_id):
         else:
         # if the date is more than 14 days, get future info:
             if day.date > date_now + timedelta(days=14):
-                res = requests.get(f'http://api.weatherapi.com/v1/future.json?key=9da560b0b23b45e4a16160600230604={ day.city } {day.country}&dt={day.date}')
+                res = requests.get(f'http://api.weatherapi.com/v1/future.json?key=9da560b0b23b45e4a16160600230604&q={ day.city } {day.country}&dt={day.date}')
                 weather = res.json()
                 weatherinfo = weather['forecast']['forecastday'][0]['day']
                 weather_icon = ''
                 # print(weatherinfo)
             # if the date is between today and 14 days from today, get forecast plus icon:
             elif day.date <= date_now + timedelta(days=14):
-                res = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=9da560b0b23b45e4a16160600230604={ day.city } {day.country}&dt={day.date}')
+                res = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=9da560b0b23b45e4a16160600230604&q={ day.city } {day.country}&dt={day.date}')
                 weather = res.json()
                 weatherinfo = weather['forecast']['forecastday'][0]['day']
                 weather_icon = weather['forecast']['forecastday'][0]['day']['condition']['icon']
@@ -94,7 +94,7 @@ def day_detail(request, day_id):
                 # print(weatherf)
             # if the date is today get current weather:
             # elif day.date == date_now:
-            #     res = requests.get(f'http://api.weatherapi.com/v1/.json?key=9da560b0b23b45e4a16160600230604={ day.city} { day.country}&aqi=no')
+            #     res = requests.get(f'http://api.weatherapi.com/v1/.json?key=9da560b0b23b45e4a16160600230604&q={ day.city} { day.country}&aqi=no')
             #     weather = res.json()
             #     # print(weatherf)
             #     weatherf = weather['current']['temp_f']
