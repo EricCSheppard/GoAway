@@ -49,12 +49,42 @@
                 {% if day.activities.count %}
                     <table class="table is-hoverable">
                         <thead>
-                            <tr><th>Time</th><th>Name</th><th>Description</th><th></th></tr>
+                            <tr>
+                                <th>
+                                    Time    
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+
+                                </th>
+                            </tr>
                         </thead>
                         <tbody>
                             {% for activity in day.activities.all %}
-                                <tr class="{% if weather.daily_will_it_rain == 1 and activity.inout == 'O' %}
-                                has-background-danger-light{% else %} {% endif %}"><td>{{activity.time}}</td><td><strong>{{activity.name}}</strong></td><td>{{activity.description}}</td><td><a href="{% url 'activity_delete' day.id activity.id %}" class="delete"></a></td></tr>
+                                <tr class="
+                                {% if weather.daily_will_it_rain == 1 and activity.inout == 'O' %}
+                                has-background-danger-light
+                                {% else %} 
+                                {% endif %}"
+                                >
+                                <td>
+                                    {{activity.time}}
+                                </td>
+                                <td>
+                                    <strong>{{activity.name}}</strong>
+                                </td>
+                                <td>
+                                    {{activity.description}}
+                                </td>
+                                <td>
+                                    <a href="{% url 'activity_delete' day.id activity.id %}" class="delete"></a>
+                                </td>
+                            </tr>
                             {% endfor %}
                         </tbody>
                     </table>

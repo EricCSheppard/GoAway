@@ -38,7 +38,7 @@ def trip_detail(request, trip_id):
     # res = []
     # for day in days:
     #     if day.city:
-    #         response = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=2235056e594342b9bfa213839230603&q={day.city}&days=1&aqi=no&alerts=no')
+    #         response = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=9da560b0b23b45e4a16160600230604={day.city}&days=1&aqi=no&alerts=no')
     #         weather = response.json()
     #         res.append(weather)
     #     else:
@@ -53,6 +53,11 @@ class TripCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+    
+    def get_form(self):  
+        form = super(TripCreate, self).get_form()
+        form.fields['start'].widget = forms.DateInput(attrs={'type': 'date'})
+        return form 
     
 class TripDelete(LoginRequiredMixin, DeleteView):
     model = Trip
@@ -74,14 +79,14 @@ def day_detail(request, day_id):
         else:
         # if the date is more than 14 days, get future info:
             if day.date > date_now + timedelta(days=14):
-                res = requests.get(f'http://api.weatherapi.com/v1/future.json?key=2235056e594342b9bfa213839230603&q={ day.city } {day.country}&dt={day.date}')
+                res = requests.get(f'http://api.weatherapi.com/v1/future.json?key=9da560b0b23b45e4a16160600230604={ day.city } {day.country}&dt={day.date}')
                 weather = res.json()
                 weatherinfo = weather['forecast']['forecastday'][0]['day']
                 weather_icon = ''
                 # print(weatherinfo)
             # if the date is between today and 14 days from today, get forecast plus icon:
             elif day.date <= date_now + timedelta(days=14):
-                res = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=2235056e594342b9bfa213839230603&q={ day.city } {day.country}&dt={day.date}')
+                res = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key=9da560b0b23b45e4a16160600230604={ day.city } {day.country}&dt={day.date}')
                 weather = res.json()
                 weatherinfo = weather['forecast']['forecastday'][0]['day']
                 weather_icon = weather['forecast']['forecastday'][0]['day']['condition']['icon']
@@ -89,7 +94,7 @@ def day_detail(request, day_id):
                 # print(weatherf)
             # if the date is today get current weather:
             # elif day.date == date_now:
-            #     res = requests.get(f'http://api.weatherapi.com/v1/.json?key=2235056e594342b9bfa213839230603&q={ day.city} { day.country}&aqi=no')
+            #     res = requests.get(f'http://api.weatherapi.com/v1/.json?key=9da560b0b23b45e4a16160600230604={ day.city} { day.country}&aqi=no')
             #     weather = res.json()
             #     # print(weatherf)
             #     weatherf = weather['current']['temp_f']
@@ -127,7 +132,7 @@ def days_populate(request, trip_id):
         if i > 0:
             new_day.date += timedelta(days=i)
         new_day.trip_id = trip_id
-        print('THIS IS THE DAY: ', new_day.as_dict())
+        # print('THIS IS THE DAY: ', new_day.as_dict())
         new_day.save()
     return redirect('trip_detail', trip_id=trip_id)
 
@@ -164,46 +169,32 @@ def activity_delete(request, day_id, activity_id):
 
 @login_required
 def add_photo(request, trip_id):
-    # photo-file will be the name attribute of our form input
     photo_file = request.FILES.get('photo-file', None)
-    # use conditional logic to make sure a file is present
     if photo_file: 
         s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
-        # create a unique key for our photos
         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
-        # we're going to use try...except which is just like try...catch in js
-        # to handle the situation if anything should go wrong
         try:
             s3.upload_fileobj(photo_file, S3_BUCKET, key)
-            # build the full url string to upload to s3
             url = f'{S3_BASE_URL}{S3_BUCKET}/{key}'
-            # if our upload(that used boto3) was successful
-            # we want to use that photo location to create a photo model
             photo = Photo(url=url, trip_id=trip_id)
-            # save the instance to the db
             photo.save()
         except Exception as error:
-            # print an error message
             print('Error uploading photo', error)
             return redirect('detail', trip_id=trip_id)
-    # upon success redirect to detail page
+
     return redirect('trip_detail', trip_id=trip_id)
 
 def signup(request):
     error_message = ''
     if request.method == 'POST':
-        # this is how to create a user form object that includes data from the browser.
         form = UserCreationForm(request.POST)
-        # now we check validity of the form, and handle our success and error situations
         if form.is_valid():
-            # we'll add the user to the db
             user = form.save()
-            # then we'll log the user in and redirect to our index
             login(request, user)
             return redirect('trip_index')
         else:
             error_message = 'Invalid sign up, try again'
-    # a bad POST or GET request will render signup.html with an empty form
+
     form = UserCreationForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
