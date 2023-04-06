@@ -26,10 +26,11 @@ main {
 /* Adjust animation duration to change the element’s speed */
     animation: fly 5s linear 1;
     pointer-events: none !important;
-	top: 40%;
+	top: 43%;
 	left: 50%;
 	position: fixed;
 	z-index: 999999;
+    max-width: 320px;
 }
 
 @keyframes fly {
@@ -37,4 +38,27 @@ main {
 	0% {
 		transform: translate(-100vw, 0);
 	}
+}
+
+@media (max-width:800px) {
+    .mainfont {
+        font-family: 'Shrikhand', cursive;
+        font-size: 6rem;
+    }
+    .flier > * {
+        /* Adjust animation duration to change the element’s speed */
+            animation: fly 5s linear 1;
+            pointer-events: none !important;
+            top: 30%;
+            left: 37%;
+            position: fixed;
+            z-index: 999999;
+            max-width: 200px;
+        }
+        @keyframes fly {
+
+            0% {
+                transform: translate(-100vw, 0);
+            }
+        }
 }
